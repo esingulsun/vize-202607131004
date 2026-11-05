@@ -105,4 +105,4 @@ psql -d kura5_city -f sql/04_weather_context.sql
 4. Şiddet ve gecikme korelasyonu ilişki gösterir; tek başına nedensellik kanıtlamaz.
 5. Model karşılaştırmasında yalnızca global ortalamaya bakma. Aynı `event_type` ve `severity_1_5` grubunda karşılaştırma yapmak daha adildir.
 
-Ayrıntılı açıklama ve sonuçlar: `reports/rapor.md`.
+Ayrıntılı açıklamalar ve sonuçlar: `reports/rapor.md`.
