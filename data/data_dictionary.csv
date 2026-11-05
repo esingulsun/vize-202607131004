@@ -1,0 +1,22 @@
+table,column,data_type,meaning,quality_notes
+sensors,id,VARCHAR(10),Sensor unique identifier,Primary key
+sensors,region,VARCHAR(60),City district/region,Demo locations in Istanbul
+sensors,type,VARCHAR(40),Sensor category,air_quality/traffic/noise/flood/waste/heat
+sensor_events,id,BIGINT,Event unique identifier,Primary key
+sensor_events,sensor_id,VARCHAR(10),Sensor that generated the event,Foreign key to sensors.id
+sensor_events,event_type,VARCHAR(50),Event type,Main grouping variable for total notification cost
+sensor_events,severity_1_5,SMALLINT,Event severity from 1 to 5,Ordinal scale; 5 is highest severity
+sensor_events,event_at,TIMESTAMP,Time event was detected,Local Istanbul time in this demo
+notifications,id,BIGINT,Notification unique identifier,Primary key
+notifications,event_id,BIGINT NULL,Related sensor event,18 intentionally empty rows represent event-less notifications
+notifications,model_name,VARCHAR(60),Model profile used to generate the notification,Synthetic labels; not current commercial model names
+notifications,total_tokens,INTEGER,Input plus output token count,Simulated values
+notifications,cost_usd,NUMERIC(12,7) NULL,Estimated model cost in USD,30 intentionally empty values; all prices are simulated
+notifications,latency_ms,INTEGER,Notification generation latency in milliseconds,12 intentionally negative values; preserve and flag them
+notifications,sent_at,TIMESTAMP,Notification dispatch time,Local Istanbul time in this demo
+weather_hourly,observed_at,TIMESTAMP,Hourly weather timestamp,Prepared CSV uses a synthetic fallback
+weather_hourly,temperature_2m_c,NUMERIC,Air temperature at 2m in Celsius,Replace via Open-Meteo fetch script
+weather_hourly,relative_humidity_2m_pct,NUMERIC,Relative humidity percent,Replace via Open-Meteo fetch script
+weather_hourly,precipitation_mm,NUMERIC,Hourly precipitation in mm,Replace via Open-Meteo fetch script
+weather_hourly,wind_speed_10m_kmh,NUMERIC,Wind speed at 10m in km/h,Replace via Open-Meteo fetch script
+weather_hourly,data_source,VARCHAR(100),Weather provenance marker,Must say Open-Meteo only after successful API download

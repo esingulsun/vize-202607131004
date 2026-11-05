@@ -1,0 +1,13 @@
+id,region,type
+S001,Kadikoy,air_quality
+S002,Kadikoy,traffic
+S003,Besiktas,air_quality
+S004,Besiktas,noise
+S005,Uskudar,flood
+S006,Uskudar,air_quality
+S007,Sisli,traffic
+S008,Sisli,noise
+S009,Fatih,waste
+S010,Fatih,air_quality
+S011,Atasehir,heat
+S012,Atasehir,traffic

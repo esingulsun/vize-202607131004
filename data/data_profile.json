@@ -1,0 +1,21 @@
+{
+  "project": "Kura #5 - Akilli sehir x IoT x LLM maliyet/gecikme",
+  "generated_at_utc": "2026-11-05T08:50:23.867381+00:00",
+  "random_seed": 20261105,
+  "counts": {
+    "sensors": 12,
+    "sensor_events": 720,
+    "notifications": 824,
+    "weather_hourly": 744
+  },
+  "quality_issues": {
+    "notifications_missing_event_id": 18,
+    "notifications_missing_cost_usd": 30,
+    "notifications_negative_latency_ms": 12
+  },
+  "provenance": {
+    "sensor_events": "synthetic teaching data; not real municipality telemetry",
+    "notifications": "synthetic teaching data; costs and latency are simulated",
+    "weather_hourly": "synthetic fallback in this prepared package; use src/fetch_open_meteo.py to replace with Open-Meteo observations"
+  }
+}
