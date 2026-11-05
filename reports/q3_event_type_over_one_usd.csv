@@ -1,0 +1,3 @@
+event_type,notification_count,total_cost_usd,avg_cost_usd,avg_tokens
+air_quality_alert,192,2.15968,0.011866373626373626,399.4479166666667
+traffic_congestion,162,1.391298,0.008976116129032258,311.89506172839504

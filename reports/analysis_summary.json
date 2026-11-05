@@ -1,0 +1,110 @@
+{
+  "row_counts": {
+    "sensors": 12,
+    "sensor_events": 720,
+    "notifications": 824
+  },
+  "quality": {
+    "notifications_without_event_id": 18,
+    "notifications_missing_cost": 30,
+    "negative_latency_rows": 12,
+    "negative_latency_policy": "Preserved and reported; excluded only from valid latency correlation/model latency summaries."
+  },
+  "severity_latency": {
+    "valid_pairs": 795,
+    "pearson_r": 0.6084,
+    "spearman_rho": 0.6642
+  },
+  "top_cost_event_type": "air_quality_alert",
+  "top_cost_usd": 2.1597,
+  "q1": [
+    {
+      "event_type": "air_quality_alert",
+      "notification_count": 192,
+      "total_cost_usd": 2.15968,
+      "avg_cost_usd": 0.011866373626373626,
+      "avg_tokens": 399.4479166666667
+    },
+    {
+      "event_type": "traffic_congestion",
+      "notification_count": 162,
+      "total_cost_usd": 1.391298,
+      "avg_cost_usd": 0.008976116129032258,
+      "avg_tokens": 311.89506172839504
+    },
+    {
+      "event_type": "heat_stress",
+      "notification_count": 135,
+      "total_cost_usd": 0.96522,
+      "avg_cost_usd": 0.007312272727272727,
+      "avg_tokens": 286.837037037037
+    },
+    {
+      "event_type": "flood_risk",
+      "notification_count": 81,
+      "total_cost_usd": 0.900105,
+      "avg_cost_usd": 0.011689675324675325,
+      "avg_tokens": 358.2716049382716
+    },
+    {
+      "event_type": "waste_overflow",
+      "notification_count": 115,
+      "total_cost_usd": 0.580512,
+      "avg_cost_usd": 0.0051831428571428575,
+      "avg_tokens": 209.1391304347826
+    },
+    {
+      "event_type": "noise_threshold",
+      "notification_count": 121,
+      "total_cost_usd": 0.478363,
+      "avg_cost_usd": 0.004019857142857143,
+      "avg_tokens": 174.87603305785123
+    }
+  ],
+  "q2": [
+    {
+      "missing_event_id_count": 18,
+      "total_notifications": 824,
+      "missing_event_id_pct": 2.18
+    }
+  ],
+  "q3": [
+    {
+      "event_type": "air_quality_alert",
+      "notification_count": 192,
+      "total_cost_usd": 2.15968,
+      "avg_cost_usd": 0.011866373626373626,
+      "avg_tokens": 399.4479166666667
+    },
+    {
+      "event_type": "traffic_congestion",
+      "notification_count": 162,
+      "total_cost_usd": 1.391298,
+      "avg_cost_usd": 0.008976116129032258,
+      "avg_tokens": 311.89506172839504
+    }
+  ],
+  "model_comparison": [
+    {
+      "model_name": "economy_v1",
+      "notifications": 422,
+      "avg_cost_usd": 0.002316829383886256,
+      "avg_latency_ms": 1384.9407582938388,
+      "avg_tokens": 290.0876777251185
+    },
+    {
+      "model_name": "balanced_v1",
+      "notifications": 244,
+      "avg_cost_usd": 0.008001704918032787,
+      "avg_latency_ms": 1602.3688524590164,
+      "avg_tokens": 303.4918032786885
+    },
+    {
+      "model_name": "premium_v1",
+      "notifications": 100,
+      "avg_cost_usd": 0.034216,
+      "avg_latency_ms": 2068.46,
+      "avg_tokens": 307.24
+    }
+  ]
+}
