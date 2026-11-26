@@ -106,3 +106,73 @@ psql -d kura5_city -f sql/04_weather_context.sql
 5. Model karşılaştırmasında yalnızca global ortalamaya bakma. Aynı `event_type` ve `severity_1_5` grubunda karşılaştırma yapmak daha adildir.
 
 Ayrıntılı açıklama ve sonuçlar: `reports/rapor.md`.
+
+
+## Veri Modeli
+
+### 2.1 Güncel ERD
+
+```mermaid
+erDiagram
+    sensors ||--o{ sensor_events : "üretir"
+    sensor_events |o--o{ notifications : "tetikler"
+
+    sensors {
+        int id PK
+        string location
+        string sensor_type
+        timestamp installed_at
+    }
+    sensor_events {
+        int id PK
+        int sensor_id FK
+        string event_type
+        int severity_1_5
+        timestamp event_time
+    }
+    notifications {
+        int id PK
+        int event_id FK "NULL olabilir"
+        string model_name
+        float cost_usd "NULL olabilir"
+        int latency_ms
+    }
+    weather_hourly {
+        int id PK
+        timestamp recorded_at
+        float temperature
+        float humidity
+    }
+```
+
+| İlişki | Kardinalite | Katılım |
+| :--- | :--- | :--- |
+| sensors – sensor_events | 1-N | Olay tarafında sensör zorunlu, sensör tarafında olay isteğe bağlı |
+| sensor_events – notifications | 1-N | Bildirim tarafında olay isteğe bağlı (`event_id` NULL olabilir), olay tarafında bildirim isteğe bağlı |
+
+**İlişki açıklamaları:**
+
+* Bir sensör, en az 0, en çok çok sayıda olay kaydına sahiptir; bir olay kaydı, tam olarak bir sensöre aittir.
+* Bir olay kaydı, en az 0, en çok çok sayıda bildirime sahiptir; bir bildirim, en fazla bir olay kaydına aittir (`event_id` NULL olabilir).
+* `weather_hourly`, şehir geneli saatlik hava verisi olduğu için FK ile bir tabloya bağlı değildir; olay zamanının saatiyle mantıksal olarak eşleştirilir.
+
+### 2.2 Normalizasyon Notu
+
+| Tablo | Neden ayrıldı / ayrılmadı | Form | Projeden örnek |
+| :--- | :--- | :--- | :--- |
+| sensor_events | Her olay ayrı satır, hücrelerde liste yok | 1NF | Bir sensörün olayları tek hücrede "1,2,3" diye tutulmadı; her olay kendi `id`'sine sahip bir satır |
+| notifications | Tüm sütunlar tek sütunlu PK olan `id`'nin tamamına bağlı; kısmi bağımlılık oluşamaz | 2NF | `model_name`, `cost_usd`, `latency_ms` yalnızca ilgili bildirim `id`'sini belirler |
+| sensors | `location` ve `sensor_type`, `sensor_id`'yi belirler; olay `id`'sini belirlemez. Olay tablosunda tutulsaydı geçişli bağımlılık (olay → sensör → konum) ve tekrar oluşurdu | 3NF | Konum bilgisi her olayda tekrarlanmadan yalnızca `sensors` tablosunda tutuluyor |
+| notifications (`model_name`) | Ayrı `models` tablosuna ayrılmadı: model adının belirlediği, bildirimden bağımsız başka bir sütun yok | 3NF | `model_name` doğrudan `id`'ye bağlı, geçişli bağımlılık yok |
+
+### 2.3 İki JOIN Sorusu
+
+**Soru 1 (INNER JOIN):** "Olaya bağlanabilen her bildirimin olay türü ve şiddeti nedir?"
+
+* Birleşme: `notifications n` ve `sensor_events e` tabloları `n.event_id = e.id` üzerinden.
+* JOIN türü: `INNER JOIN`. Olayı olmayan (`event_id` NULL) bildirimlerin olay türü ve şiddeti olamaz; yalnızca iki tarafta da eşleşen satırlar isteniyor.
+
+**Soru 2 (LEFT JOIN, eşleşmeyenleri bulma):** "Hiç bildirimi üretilmemiş olaylar hangileri?"
+
+* Birleşme: `sensor_events e` ve `notifications n` tabloları `e.id = n.event_id` üzerinden.
+* JOIN türü: `LEFT JOIN` ve `WHERE n.id IS NULL`. Tüm olaylar listelenmeli; bildirimi olmayanların `n` tarafı NULL gelir, eşleşmeyen kayıtlar böylece bulunur. `INNER JOIN` bu olayları listeden düşürürdü.
