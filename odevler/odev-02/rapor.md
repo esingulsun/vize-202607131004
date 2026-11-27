@@ -12,9 +12,9 @@
 
 **Kullandığım veritabanı:** ☐ `llm_ops`  ☑ `robot_fleet`
 
-**PR bağlantısı:** `https://github.com/esingulsun/vize-202607131004`
+**PR bağlantısı:** `https://github.com/esingulsun/vize-202607131004/pull/2`
 
-**Commit sayısı:** 3+
+**Commit sayısı:** 6
 
 ---
 
