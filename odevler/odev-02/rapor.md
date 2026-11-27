@@ -12,19 +12,18 @@
 
 **Kullandığım veritabanı:** ☐ `llm_ops`  ☑ `robot_fleet`
 
-**PR bağlantısı:** `https://github.com/esingulsun/vize-202607131004/pull/2`
+**PR bağlantısı:** `https://github.com/esingulsun/vize-202607131004`
 
-**Commit sayısı:** 4+
+**Commit sayısı:** 3+
 
 ---
 
 ## 1. Fan-out (Soru 4)
+Soru 4a'da `robots` ile `missions` tablosunu INNER JOIN ile birleştirip `SUM(r.battery_level)` aldığımda toplam **262'den 700'e** çıktı (yaklaşık 2,7 kat). Nedeni, birden fazla görevi olan her robotun satırının görev sayısı kadar tekrarlanmasıdır (fan-out): Kartal-01, Kartal-03 ve Atlas-01 **3'er kez**, Mars-02 ve Mars-01 **2'şer kez** sayıldı, bataryaları da o kadar kez toplandı.
 
-Soru 4a'da `robots` ile `missions` tablosunu INNER JOIN ile birleştirip `SUM(r.battery_level)` aldığımda sonuç şişti. Nedeni: birden fazla görevi olan her robot için JOIN, o robotun satırını kaç görev varsa o kadar tekrarlıyor — batarya değeri birden fazla kez toplandı. Bu olaya "fan-out" deniyor.
+4b'de `WHERE id IN (SELECT DISTINCT robot_id FROM missions)` ile JOIN kullanmadan her robotu yalnızca bir kez saydım ve doğru toplam olan **262**'yi buldum.
 
-4b'de `WHERE id IN (SELECT DISTINCT robot_id FROM missions)` ile JOIN kullanmadan her robotun bataryasını yalnızca bir kez topladım ve doğru sonucu elde ettim.
-
-Gerçek bir raporda bu hata tehlikelidir: bütçe hesabında her robotun maliyeti kaç görevi varsa o kadar sayılır, toplam gerçeğin çok üzerinde çıkar ve yanlış kararlar alınır.
+Gerçek bir raporda bu hata, filonun toplam şarjını gerçekte olduğundan 2,7 kat fazla gösterir; filo sorumlusu şarj ve bakım planını bu şişkin sayıya göre yapar ve yanlış karar verir.
 
 ---
 
